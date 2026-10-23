@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+/* Layout concept: a printed invitation suite — an ivory card on olive cloth,
+   then the site unfolds as alternating olive "envelope" bands and ivory "card" pages. */
+@theme {
+  --color-olive: #343C2D;
+  --color-olive-deep: #262C21;
+  --color-ivory: #F8F4EA;
+  --color-paper: #F2ECDD;
+  --color-gold: #C5A46D;
+  --color-gold-deep: #8F7140;
+  --color-sage: #A6AD91;
+  --color-charcoal: #2B2B28;
+
+  --font-display: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
+  --font-script: "Pinyon Script", "Great Vibes", "Snell Roundhand", cursive;
+  --font-label: "Jost", "Gill Sans", "Segoe UI", system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    background: var(--color-olive);
+    color: var(--color-charcoal);
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { text-wrap: balance; }
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  ::selection { background: var(--color-gold); color: var(--color-olive-deep); }
+}
+
+@layer components {
+  .paper {
+    background-color: var(--color-ivory);
+    background-image:
+      radial-gradient(circle at 20% 15%, rgb(197 164 109 / 0.07), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgb(166 173 145 / 0.12), transparent 45%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .25 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .cloth {
+    background-color: var(--color-olive);
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgb(166 173 145 / 0.14), transparent 60%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 .9 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .gilt-frame {
+    position: relative;
+    border: 1px solid var(--color-gold);
+    outline: 1px solid rgb(197 164 109 / 0.45);
+    outline-offset: -8px;
+  }
+  .eyebrow {
+    font-family: var(--font-label);
+    font-size: 0.72rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+  .gutter {
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .btn-gold {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    font-family: var(--font-label);
+    font-size: 0.78rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    padding: 0.95rem 1.8rem;
+    border: 1px solid var(--color-gold);
+    color: var(--color-olive-deep);
+    background: linear-gradient(180deg, #D9BE8A, var(--color-gold));
+    transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+  }
+  .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 10px 24px -12px rgb(0 0 0 / .5); filter: brightness(1.04); }
+  .btn-gold:disabled { opacity: .6; cursor: progress; transform: none; }
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-label);
+    font-size: 0.74rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 0.8rem 1.3rem;
+    border: 1px solid currentColor;
+    transition: background .2s ease, color .2s ease;
+  }
+  .field {
+    width: 100%;
+    background: rgb(255 255 255 / 0.55);
+    border: 1px solid rgb(52 60 45 / 0.28);
+    padding: 0.8rem 0.95rem;
+    font-family: var(--font-label);
+    font-size: 1rem;
+    color: var(--color-charcoal);
+    transition: border-color .2s ease, background .2s ease;
+  }
+  .field:focus { outline: none; border-color: var(--color-gold-deep); background: #fff; box-shadow: 0 0 0 3px rgb(197 164 109 / .3); }
+  .field[aria-invalid="true"] { border-color: #9B3B2E; }
+  .label {
+    display: block;
+    font-family: var(--font-label);
+    font-size: 0.74rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-olive);
+    margin-bottom: 0.45rem;
+  }
+}
+
+/* ── Motion ─────────────────────────────────────────── */
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes bloom { from { opacity: 0; transform: scale(.92) rotate(-4deg); } to { opacity: 1; transform: none; } }
+@keyframes shimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+@keyframes breathe { 0%, 100% { box-shadow: 0 0 0 0 rgb(197 164 109 / .45); } 50% { box-shadow: 0 0 0 10px rgb(197 164 109 / 0); } }
+@keyframes cardOut { to { opacity: 0; transform: translateY(-24px) scale(.97); } }
+@keyframes curtainUp { to { opacity: 0; visibility: hidden; } }
+
+.anim-rise { animation: rise .9s cubic-bezier(.2,.7,.2,1) both; }
+.anim-bloom { animation: bloom 1.4s cubic-bezier(.2,.7,.2,1) both; }
+.anim-breathe { animation: breathe 2.6s ease-in-out infinite; }
+.gold-text {
+  background: linear-gradient(100deg, #A8864F, #E6CF9F 45%, #B8955C 70%, #E6CF9F);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 9s ease-in-out infinite;
+}
+.leaving .invite-card { animation: cardOut .8s ease forwards; }
+.leaving { animation: curtainUp .5s ease .65s forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: .001ms !important;
+  }
+}
